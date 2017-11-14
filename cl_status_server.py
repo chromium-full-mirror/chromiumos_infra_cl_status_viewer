@@ -10,7 +10,7 @@ from __future__ import print_function
 import os
 import time
 
-# pylint: disable=no-name-in-module
+# pylint: disable=import-error, no-name-in-module
 from oauth2client.service_account import ServiceAccountCredentials
 
 from chromite.lib import build_requests
