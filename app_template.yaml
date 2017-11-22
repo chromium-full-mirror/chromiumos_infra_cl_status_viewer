@@ -1,0 +1,24 @@
+runtime: python
+env: flex
+entrypoint: gunicorn -b :$PORT main:app
+
+runtime_config:
+  python_version: 2
+
+endpoints_api_service:
+  # The following values are to be replaced by information from the output of
+  # 'gcloud service-management deploy openapi-appengine.yaml' command.
+  name: chromeos-cl-viewer-api.appspot.com
+  config_id: {{endpoints_service_config_id}}
+
+env_variables:
+    # CIDB_CREDS is the path the to CIDB credential folder which should contain
+    # - user.txt: user name;
+    # - password.txt: password of this user;
+    # - unix_socket.txt: /cloudsql/Instance_Connection_Name
+    CIDB_CREDS: 'cidb_creds/prod_cidb_service'
+    # service acount json file for Buildbucket connection.
+    SERVICE_ACCOUNT_JSON: 'chromeos-cl-viewer-api.json'
+
+beta_settings:
+    cloud_sql_instances: cosmic-strategy-646:us-central1:cidb-gen2-replica2
