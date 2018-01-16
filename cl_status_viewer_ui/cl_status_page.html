@@ -34,52 +34,39 @@
       <p> Change Status: {{change_status}} </p>
       {% endif %}
       {% if build_raws %}
-      <table>
+      <table style="width:400px">
          <tr>
-            <th>Build</th>
-            <th>Status</th>
-            <th>Type</th>
-            <th>Build Id</th>
-            <th>Start Time</th>
-            <th>End Time</th>
-            <th>Buildbucket ID</th>
-            <th>Build Link</th>
+            <th width="70%">Build</th>
+            <th width="30%">Status</th>
          </tr>
          {% for build in build_raws %}
          <tr>
-            <td>{{build.build_name}}</td>
-            {% if build.status == "UNKNOWN" %}
-            <td style="background-color:Silver;">{{build.status}}</td>
-            {% elif build.status == "SCHEDULED" %}
-            <td style="background-color:CornflowerBlue;">{{build.status}}</td>
-            {% elif build.status == "PASSED" %}
-            <td style="background-color:YellowGreen;">{{build.status}}</td>
-            {% elif build.status == "STARTED" %}
-            <td style="background-color:Khaki;">{{build.status}}</td>
-            {% elif build.status == "FAILED" %}
-            <td style="background-color:Tomato;">{{build.status}}</td>
-            {% elif build.status == "CANCELED" %}
-            <td style="background-color:Orchid;">{{build.status}}</td>
-            {% else %}
-            <td></td>
-            {% endif %}
-            <td>{{build.category}}</td>
-            <td>{{build.build_id}}</td>
-            <td>{{build.start_time}}</td>
-            <td>{{build.end_time}}</td>
-            {% if build.buildbucket_id %}
-            <td><a href="https://apis-explorer.appspot.com/apis-explorer/?base=https://cr-buildbucket.appspot.com/_ah/api#p/buildbucket/v1/buildbucket.get?id={{build.buildbucket_id}}">{{build.buildbucket_id}}</a></td>
-            {% else %}
-            <td></td>
-            {% endif %}
             {% if build.url %}
-            <td><a href="{{build.url}}">Link</a></td>
+            <td><a href="{{build.url}}">{{build.build_name}}</a></td>
             {% else %}
-            <td></td>
+            <td>{{build.build_name}}</td>
             {% endif %}
+            <td name="status" value="{{build.status}}">{{build.status}}</td>
          </tr>
          {% endfor %}
       </table>
       {% endif %}
    </body>
+   <script>
+      var status_color_map = {
+         "SCHEDULED": "CornflowerBlue",
+         "PASSED": "YellowGreen",
+         "STARTED": "Khaki",
+         "FAILED": "Tomato",
+         "CANCELED": "Orchid",
+         "UNKNOWN": "Silver"
+      }
+      document.addEventListener("DOMContentLoaded", function() {
+         build_statuses = document.getElementsByName("status");
+         for (var i = 0; i < build_statuses.length; i++){
+            v = build_statuses[i].getAttribute("value")
+            build_statuses[i].style.backgroundColor = status_color_map[v];
+         }
+      });
+   </script>
 </html>
