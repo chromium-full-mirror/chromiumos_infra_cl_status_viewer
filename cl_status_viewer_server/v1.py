@@ -109,7 +109,7 @@ def GetCLStatus(gerrit_host, change_number, patch_number):
     response.data.CopyFrom(data)
   except Exception as e:
     logging.error('Exception for getting CL status for change %s: %s',
-                  change, e)
+                  change, e, exc_info=True)
     error = response.errors.add()
     error.CopyFrom(ConstructError(e))
 

@@ -63,8 +63,7 @@ def GetBuildCategory(build_type):
     build_type: The type of the build.
 
   Returns:
-    A member of ExtraBuildInfo.BuildCategory to categorize the build if it's
-    valid. None if it's invalid.
+    A member of ExtraBuildInfo.BuildCategory to categorize the build.
   """
   if build_type == constants.PRE_CQ_TYPE:
     return viewer_message_pb2.ExtraBuildInfo.PRE_CQ
@@ -72,6 +71,7 @@ def GetBuildCategory(build_type):
     return viewer_message_pb2.ExtraBuildInfo.CQ
   else:
     logging.warning('Invalid build_type %s', build_type)
+    return viewer_message_pb2.ExtraBuildInfo.UNKNOWN
 
 
 def GetChangeSource(gerrit_host):

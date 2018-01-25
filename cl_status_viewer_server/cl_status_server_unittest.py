@@ -172,7 +172,7 @@ class CLStatusServerTests(cros_test_lib.MockTestCase):
     self.assertEqual(cl_status_server.GetBuildCategory(constants.PALADIN_TYPE),
                      viewer_message_pb2.ExtraBuildInfo.CQ)
     self.assertEqual(cl_status_server.GetBuildCategory(constants.PFQ_TYPE),
-                     None)
+                     viewer_message_pb2.ExtraBuildInfo.UNKNOWN)
 
   def testGetChangeSource(self):
     """Test GetChangeSource."""
