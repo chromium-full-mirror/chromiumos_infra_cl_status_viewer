@@ -6,6 +6,8 @@ This project is currently running on Google Cloud Project google.com:chromeos-cl
 
 From the directory where the app.yaml file is located, start the local development server with the following command:
 
+pip install -r requirements.txt  -t ./lib
+
 dev_appserver.py app.yaml
 
 Visit http://localhost:8080/ in your web browser to view the app.

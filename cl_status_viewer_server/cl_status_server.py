@@ -45,7 +45,8 @@ CIDB_BUILD_STATUS_DICT = {
 }
 
 
-def GetTokenFromServiceAccount():
+# pylint: disable=unused-argument
+def GetTokenFromServiceAccount(**kwargs):
   """Get token from the ServiceAccount credential file.
 
   Returns:

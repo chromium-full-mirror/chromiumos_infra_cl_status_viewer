@@ -47,7 +47,7 @@ $PROJECT_ROOT = cl_status_viewer_server/
   a. http://localhost:$port/v1/index (e.g.http://127.0.0.1:8080/v1/index)
   b. http://localhost:$port/v1/internal_index (e.g.http://127.0.0.1:8080/v1/internal_index)
   c. http://localhost:$port/v1/gerrit/{gerrit}/changes/{change_id}/patches/{patch_number}/status
-  (e.g. http://127.0.0.1:8080/v1/gerrit/chromium-review.googlesource.com/changes/764437/patches/9/status)
+  (e.g. http://127.0.0.1:8080/v1/gerrit/chromium-review.googlesource.com/changes/764437/patches/8/status)
 
 
 ## Deploying to Production
@@ -73,4 +73,4 @@ $PROJECT_ROOT = cl_status_viewer_server/
 3. Try APIs with curl or a browser.
   a. https://chromeos-cl-viewer-api.appspot.com/v1/index
   b. https://chromeos-cl-viewer-api.appspot.com/v1/internal_index?key=$APIKey
-  c. https://chromeos-cl-viewer-api.appspot.com/v1/gerrit/chromium-review.googlesource.com/changes/764437/patches/9/status?key=$APIKey
+  c. https://chromeos-cl-viewer-api.appspot.com/v1/gerrit/chromium-review.googlesource.com/changes/764437/patches/8/status?key=$APIKey
