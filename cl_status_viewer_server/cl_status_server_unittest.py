@@ -390,7 +390,7 @@ class CLStatusServerTests(cros_test_lib.MockTestCase):
         pre_cq_builds,
         'binhost-pre-cq',
         build_status=viewer_message_pb2.Build.SCHEDULED,
-        start_time=1507846318257790,
+        start_time=1507846318,
         extra_info_buildbucket_id='8965902348753351216',
         extra_info_build_category=viewer_message_pb2.ExtraBuildInfo.PRE_CQ)
 
@@ -451,6 +451,7 @@ class CLStatusServerTests(cros_test_lib.MockTestCase):
         build_namespace=viewer_message_pb2.Build.CROS_BUILD,
         build_status=viewer_message_pb2.Build.SCHEDULED,
         extra_info_build_category=viewer_message_pb2.ExtraBuildInfo.CQ,
+        start_time=1507846318,
         extra_info_buildbucket_id='bb_id_1',
         extra_info_url=('https://uberchromegw.corp.google.com/i/chromeos/'
                         'builders/cyan-paladin/builds/4376'))

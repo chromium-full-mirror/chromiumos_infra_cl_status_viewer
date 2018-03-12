@@ -183,11 +183,11 @@ def GetBuildInfoFromBuildbucketBuild(build_config, buildbucket_id,
 
   start_time = buildbucket_lib.GetBuildStartedTS(build_content)
   if start_time:
-    build_info.start_time = int(start_time)
+    build_info.start_time = int(start_time[0:10])
 
   end_time = buildbucket_lib.GetBuildCompletedTS(build_content)
   if end_time:
-    build_info.end_time = int(end_time)
+    build_info.end_time = int(end_time[0:10])
 
   build_types = buildbucket_lib.GetBuildTags(build_content, 'build_type')
   if not build_types:
@@ -347,15 +347,16 @@ def _GetPreCQBuilds(gerrit_patch, cl_actions):
   db = GetCIDBConnection()
   buildbucket_client = GetBuildbucketClient()
 
-  # Get started builds from CDIB.
-  started_build_statuses = db.GetBuildStatuses(started_builds.values())
-  for build_status in started_build_statuses:
-    if build_status['build_type'] != constants.PRE_CQ_TYPE:
-      # Filter out Pre-CQ-Launcher builds
-      continue
+  if started_builds:
+    # Get started builds from CDIB.
+    started_build_statuses = db.GetBuildStatuses(started_builds.values())
+    for build_status in started_build_statuses:
+      if build_status['build_type'] != constants.PRE_CQ_TYPE:
+        # Filter out Pre-CQ-Launcher builds
+        continue
 
-    build_info = GetBuildInfoFromCIDBBuild(build_status)
-    pre_cq_build_dict[build_info.build_name] = build_info
+      build_info = GetBuildInfoFromCIDBBuild(build_status)
+      pre_cq_build_dict[build_info.build_name] = build_info
 
   # Get luanched but not started builds from Buildbucket.
   for build_config, buildbucket_id in launched_builds.iteritems():
