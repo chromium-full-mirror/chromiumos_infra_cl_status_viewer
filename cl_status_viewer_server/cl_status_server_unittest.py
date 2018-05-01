@@ -317,8 +317,8 @@ class CLStatusServerTests(cros_test_lib.MockTestCase):
         build_status=viewer_message_pb2.Build.PASSED,
         extra_info_buildbucket_id='bb_id_1',
         extra_info_build_category=viewer_message_pb2.ExtraBuildInfo.PRE_CQ,
-        extra_info_url=('https://luci-milo.appspot.com/buildbot/'
-                        'chromiumos.tryserver/binhost-pre-cq/1'))
+        extra_info_url=('http://cros-goldeneye/chromeos/healthmonitoring/'
+                        'buildDetails?buildbucketId=bb_id_1'))
 
   def testGetPreCQBuildsWithMultiPreCQActions(self):
     """_GetPreCQBuilds with multiple pre-cq cl_actions."""
@@ -481,8 +481,8 @@ class CLStatusServerTests(cros_test_lib.MockTestCase):
         build_status=viewer_message_pb2.Build.STARTED,
         extra_info_build_category=viewer_message_pb2.ExtraBuildInfo.CQ,
         extra_info_buildbucket_id='bb_id_1',
-        extra_info_url=('https://luci-milo.appspot.com/buildbot/chromeos/'
-                        'cyan-paladin/1'))
+        extra_info_url=('http://cros-goldeneye/chromeos/healthmonitoring/'
+                        'buildDetails?buildbucketId=bb_id_1'))
 
   def testGetCQBuildsWithIrrelevantBuilds(self):
     """_GetCQBuilds with irrelevant slaves."""

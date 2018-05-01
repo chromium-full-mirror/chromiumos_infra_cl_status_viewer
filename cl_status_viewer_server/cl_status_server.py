@@ -153,10 +153,11 @@ def GetBuildInfoFromCIDBBuild(build_status):
   # Old builds may not have buildbucket_id
   if build_status['buildbucket_id']:
     build_info.extra_build_info.buildbucket_id = build_status['buildbucket_id']
-
-  url = tree_status.ConstructDashboardURL(
-      build_status['waterfall'], build_status['builder_name'],
-      build_status['build_number'])
+    url = tree_status.ConstructLegolandBuildURL(build_status['buildbucket_id'])
+  else:
+    url = tree_status.ConstructDashboardURL(
+        build_status['waterfall'], build_status['builder_name'],
+        build_status['build_number'])
   build_info.extra_build_info.url = url
 
   return build_info
