@@ -18,7 +18,6 @@ from chromite.lib import clactions
 from chromite.lib import constants
 from chromite.lib import cros_test_lib
 from chromite.lib import fake_cidb
-from chromite.lib.const import waterfall
 from common.protos import viewer_message_pb2
 
 
@@ -122,11 +121,11 @@ class CLStatusServerTests(cros_test_lib.MockTestCase):
         internal=change_source == constants.CHANGE_SOURCE_INTERNAL)
 
     self.pre_cq_launcher_build_id = self.db.InsertBuild(
-        'pre-cq-launcher', waterfall.WATERFALL_INTERNAL, 1, 'pre-cq-launcher',
+        'pre-cq-launcher', 1, 'pre-cq-launcher',
         'bot_hostname', status=constants.BUILDER_STATUS_INFLIGHT)
 
     self.cq_master_build_id = self.db.InsertBuild(
-        'master-paladin', waterfall.WATERFALL_INTERNAL, 2, 'master-paladin',
+        'master-paladin', 2, 'master-paladin',
         'bot_hostname', status=constants.BUILDER_STATUS_INFLIGHT,
         build_type=constants.PALADIN_TYPE)
 
@@ -253,7 +252,7 @@ class CLStatusServerTests(cros_test_lib.MockTestCase):
   def testGetPreCQBuildsWithPickedUpAction(self):
     """_GetPreCQBuilds with CL_ACTION_PICKED_UP."""
     pre_cq_build_id = self.db.InsertBuild(
-        'binhost-pre-cq', waterfall.WATERFALL_TRYBOT, 1, 'binhost-pre-cq',
+        'binhost-pre-cq', 1, 'binhost-pre-cq',
         'bot_hostname', status=constants.BUILDER_STATUS_INFLIGHT,
         build_type=constants.PRE_CQ_TYPE, buildbucket_id='8965902348753351216')
     a1 = clactions.CLAction.FromGerritPatchAndAction(
@@ -287,7 +286,7 @@ class CLStatusServerTests(cros_test_lib.MockTestCase):
   def testGetPreCQBuildsWithVerifiedAction(self):
     """_GetPreCQBuilds with CL_ACTION_VERIFIED."""
     pre_cq_build_id = self.db.InsertBuild(
-        'binhost-pre-cq', waterfall.WATERFALL_TRYBOT, 1, 'binhost-pre-cq',
+        'binhost-pre-cq', 1, 'binhost-pre-cq',
         'bot_hostname', status=constants.BUILDER_STATUS_PASSED,
         build_type=constants.PRE_CQ_TYPE, buildbucket_id='bb_id_1')
     a1 = clactions.CLAction.FromGerritPatchAndAction(
@@ -323,11 +322,11 @@ class CLStatusServerTests(cros_test_lib.MockTestCase):
   def testGetPreCQBuildsWithMultiPreCQActions(self):
     """_GetPreCQBuilds with multiple pre-cq cl_actions."""
     pre_cq_build_id_1 = self.db.InsertBuild(
-        'pre-cq', waterfall.WATERFALL_TRYBOT, 1, 'binhost-pre-cq',
+        'pre-cq', 1, 'binhost-pre-cq',
         'bot_hostname', status=constants.BUILDER_STATUS_INFLIGHT,
         build_type=constants.PRE_CQ_TYPE, buildbucket_id='bb_id_1')
     pre_cq_build_id_2 = self.db.InsertBuild(
-        'pre-cq', waterfall.WATERFALL_TRYBOT, 1, 'lumpy-pre-cq',
+        'pre-cq', 1, 'lumpy-pre-cq',
         'bot_hostname', status=constants.BUILDER_STATUS_INFLIGHT,
         build_type=constants.PRE_CQ_TYPE, buildbucket_id='bb_id_2')
 
@@ -464,7 +463,7 @@ class CLStatusServerTests(cros_test_lib.MockTestCase):
         CYAN_PALADIN_CONTENT)
 
     cyan_build_id = self.db.InsertBuild(
-        'cyan-paladin', waterfall.WATERFALL_INTERNAL, 1, 'cyan-paladin',
+        'cyan-paladin', 1, 'cyan-paladin',
         'bot_hostname', status=constants.BUILDER_STATUS_INFLIGHT,
         build_type=constants.PALADIN_TYPE, buildbucket_id='bb_id_1',
         master_build_id=self.cq_master_build_id)
@@ -492,7 +491,7 @@ class CLStatusServerTests(cros_test_lib.MockTestCase):
         CYAN_PALADIN_CONTENT)
 
     cyan_build_id = self.db.InsertBuild(
-        'cyan-paladin', waterfall.WATERFALL_TRYBOT, 1, 'cyan-paladin',
+        'cyan-paladin', 1, 'cyan-paladin',
         'bot_hostname', status=constants.BUILDER_STATUS_INFLIGHT,
         build_type=constants.PALADIN_TYPE, buildbucket_id='bb_id_1',
         master_build_id=self.cq_master_build_id)
@@ -517,7 +516,7 @@ class CLStatusServerTests(cros_test_lib.MockTestCase):
   def testGetCLStatusAndBuildsWithPreCQActions(self):
     """GetCLStatusAndBuilds with Pre-CQ actions."""
     pre_cq_build_id = self.db.InsertBuild(
-        'pre-cq', waterfall.WATERFALL_TRYBOT, 1, 'binhost-pre-cq',
+        'pre-cq', 1, 'binhost-pre-cq',
         'bot_hostname', status=constants.BUILDER_STATUS_INFLIGHT,
         build_type=constants.PRE_CQ_TYPE, buildbucket_id='bb_id_1')
     a1 = clactions.CLAction.FromGerritPatchAndAction(
@@ -536,7 +535,7 @@ class CLStatusServerTests(cros_test_lib.MockTestCase):
   def testGetCLStatusAndBuildsWithPreCQAndCQActions(self):
     """GetCLStatusAndBuilds with Pre-CQ and CQ actions."""
     pre_cq_build_id = self.db.InsertBuild(
-        'pre-cq', waterfall.WATERFALL_TRYBOT, 1, 'binhost-pre-cq',
+        'pre-cq', 1, 'binhost-pre-cq',
         'bot_hostname', status=constants.BUILDER_STATUS_INFLIGHT,
         build_type=constants.PRE_CQ_TYPE, buildbucket_id='bb_id_1')
     a1 = clactions.CLAction.FromGerritPatchAndAction(
@@ -556,12 +555,12 @@ class CLStatusServerTests(cros_test_lib.MockTestCase):
     self.buildbucket_client.GetBuildRequest.return_value = (
         CYAN_PALADIN_CONTENT)
     self.db.InsertBuild(
-        'cyan-paladin', waterfall.WATERFALL_INTERNAL, 1, 'cyan-paladin',
+        'cyan-paladin', 1, 'cyan-paladin',
         'bot_hostname', status=constants.BUILDER_STATUS_INFLIGHT,
         build_type=constants.PALADIN_TYPE, buildbucket_id='bb_id_1',
         master_build_id=self.cq_master_build_id)
     self.db.InsertBuild(
-        'lumpy-paladin', waterfall.WATERFALL_INTERNAL, 1, 'lumpy-paladin',
+        'lumpy-paladin', 1, 'lumpy-paladin',
         'bot_hostname', status=constants.BUILDER_STATUS_INFLIGHT,
         build_type=constants.PALADIN_TYPE, buildbucket_id='bb_id_2',
         master_build_id=self.cq_master_build_id)
