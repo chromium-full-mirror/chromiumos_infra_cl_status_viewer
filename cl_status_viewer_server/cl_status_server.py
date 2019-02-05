@@ -15,7 +15,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 
 from chromite.lib import build_requests
 from chromite.lib import buildbucket_lib
-from chromite.lib import cidb
+from chromite.lib import buildstore
 from chromite.lib import clactions
 from chromite.lib import constants
 from chromite.lib import cros_logging as logging
@@ -248,9 +248,9 @@ def GetIrrelevantSlaves(cl_actions, slave_statuses):
              c.action == constants.CL_ACTION_IRRELEVANT_TO_SLAVE)
 
 @factory.CachedFunctionCall
-def GetCIDBConnection():
-  return cidb.CIDBConnection(CIDB_CREDS_PATH, for_service=True)
-
+def GetBuildStore():
+  return buildstore.BuildStore(cidb_creds=CIDB_CREDS_PATH,
+                               for_service=True)
 
 @factory.CachedFunctionCall
 def GetBuildbucketClient():
@@ -270,7 +270,7 @@ def GetCLStatusAndBuilds(change):
     viewer_message_pb2.Build instances of relevant Pre-CQs and CQs.
   """
   change_source = GetChangeSource(change.gerrit_host)
-  db = GetCIDBConnection()
+  db = GetBuildStore().GetCIDBHandle()
 
   # TODO: check whether the CL patch exsits on Gerrit.
   gerrit_patch = clactions.GerritPatchTuple(
@@ -345,12 +345,13 @@ def _GetPreCQBuilds(gerrit_patch, cl_actions):
     else:
       started_builds[build_config] = pre_cq_progress.build_id
 
-  db = GetCIDBConnection()
+  bs = GetBuildStore()
   buildbucket_client = GetBuildbucketClient()
 
   if started_builds:
     # Get started builds from CDIB.
-    started_build_statuses = db.GetBuildStatuses(started_builds.values())
+    started_build_statuses = bs.GetBuildStatuses(
+        build_ids=started_builds.values())
     for build_status in started_build_statuses:
       if build_status['build_type'] != constants.PRE_CQ_TYPE:
         # Filter out Pre-CQ-Launcher builds
@@ -388,11 +389,12 @@ def _GetCQBuilds(cl_actions):
   if master_build_id is None:
     return cq_build_dict
 
-  db = GetCIDBConnection()
+  bs = GetBuildStore()
+  db = bs.GetCIDBHandle()
   buildbucket_client = GetBuildbucketClient()
 
   # Add CQ master to cq_build_dict
-  master_status = db.GetBuildStatus(master_build_id)
+  master_status = bs.GetBuildStatuses(build_ids=[master_build_id])[0]
   cq_build_dict[master_status['build_config']] = (
       GetBuildInfoFromCIDBBuild(master_status))
 
